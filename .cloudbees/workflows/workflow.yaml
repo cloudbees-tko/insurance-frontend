@@ -93,8 +93,8 @@ jobs:
         name: Install helm chart
         uses: cloudbees-io/helm-install@v1
         with:
-          chart-location: ${{ needs.build-and-publsh.outputs.chart-location }}
-          version: ${{ needs.build-and-publsh.outputs.chart-version }}
+          chart-location: ${{ needs.build-helm.outputs.chart-location }}
+          version: ${{ needs.build-helm.outputs.chart-version }}
           release-name: ${{ env.UNIQUE_PREFIX }}-${{ env.APP_NAME }}
           namespace: ${{ env.UNIQUE_PREFIX }}-${{ env.APP_NAME }}
           values: |
