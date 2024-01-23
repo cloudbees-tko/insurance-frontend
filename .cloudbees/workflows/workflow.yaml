@@ -22,3 +22,38 @@ jobs:
         with:
           job-name: insurance-frontend
 
+      - name: Login to AWS
+        uses: cloudbees-io/configure-aws-credentials@v1
+        id: aws-login
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ vars.aws_access_key_id }}
+          aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
+          role-to-assume: cloudbees-infra-mgmt
+          role-duration-seconds: "3600" # need to override default of 6h as our role has 1h max.
+
+      - name: Configure container registry 
+        uses: cloudbees-io/configure-ecr-credentials@v1
+
+      - id: helmpkg
+        name: Package Helm chart
+        uses: cloudbees-io/helm-package@v1
+        with:
+          chart: ./charts/myapp
+          destination: ./packaged-charts
+          version: "0.0.1"
+          values: |
+            image:
+              repository:  ${{ steps.aws-login.outputs.aws-account-id }}.dkr.ecr.us-east-1.amazonaws.com/${{ env.APP_NAME }}-image
+              tag: ${{ steps.image-publish.outputs.tag }}
+
+      - name: Publish Helm chart
+        id: helm-publish
+        uses: cloudbees-io/helm-push@v1
+        with:
+          chart: ${{ steps.helmpkg.outputs.chart }}
+          remote: oci://${{ steps.aws-login.outputs.aws-account-id }}.dkr.ecr.us-east-1.amazonaws.com
+
+    outputs:
+      chart-location: ${{ steps.helm-publish.outputs.chart }}
+      chart-version: ${{ steps.helm-publish.outputs.version }}

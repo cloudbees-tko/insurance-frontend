@@ -29,7 +29,7 @@ pipeline {
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                     ]]) {
                     sh  """echo '{"credsStore": "ecr-login"}' >> '/kaniko/.docker/config.json'"""
-                    sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=189768267137.dkr.ecr.us-east-1.amazonaws.com/insurance-frontend:${env.BUILD_ID}"
+                    sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=189768267137.dkr.ecr.us-east-1.amazonaws.com/insurance-frontend-image:${env.BUILD_ID}"
                 } //container
               } //steps
         }
