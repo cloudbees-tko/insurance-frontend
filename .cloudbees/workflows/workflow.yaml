@@ -69,3 +69,41 @@ jobs:
     outputs:
       chart-location: ${{ steps.helm-publish.outputs.chart }}
       chart-version: ${{ steps.helm-publish.outputs.version }}
+
+deploy:
+    needs:
+      - build-and-publsh
+
+    steps:
+      - uses: cloudbees-io/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ vars.aws_access_key_id }}
+          aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
+          role-to-assume: cloudbees-infra-mgmt
+          role-duration-seconds: "3600" # need to override default of 6h as our role has 1h max
+
+      - uses: cloudbees-io/configure-eks-credentials@v1
+        with:
+          name: cloudbees-quickstart-cluster
+
+      - uses: cloudbees-io/configure-ecr-credentials@v1
+
+      - id: install-chart
+        name: Install helm chart
+        uses: cloudbees-io/helm-install@v1
+        with:
+          chart-location: ${{ needs.build-and-publsh.outputs.chart-location }}
+          version: ${{ needs.build-and-publsh.outputs.chart-version }}
+          release-name: ${{ env.UNIQUE_PREFIX }}-${{ env.APP_NAME }}
+          namespace: ${{ env.UNIQUE_PREFIX }}-${{ env.APP_NAME }}
+          values: |
+            ingress:
+              annotations:
+                external-dns.alpha.kubernetes.io/hostname: ${{ env.HOSTNAME }}
+              hosts:
+                - host: ${{ env.HOSTNAME }}
+                  paths:
+                    - path: /
+                      pathType: Prefix
+
