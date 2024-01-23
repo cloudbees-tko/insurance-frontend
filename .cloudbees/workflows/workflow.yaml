@@ -44,7 +44,7 @@ jobs:
         name: Package Helm chart
         uses: cloudbees-io/helm-package@v1
         with:
-          chart: ./charts/myapp
+          chart: ./chart
           destination: ./packaged-charts
           version: "0.0.1"
           values: |
