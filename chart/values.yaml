@@ -16,18 +16,20 @@ service:
 
 ingress:
   enabled: true
-  annotations:
-     kubernetes.io/ingress.class: alb,
-     alb.ingress.kubernetes.io/scheme: internet-facing,
-     alb.ingress.kubernetes.io/target-type: ip,
-     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]',
-     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:189768267137:certificate/99bc14a9-bc03-4d4a-92ca-88842ca76f39,
-     hosts: []
+  className: "alb"
+  annotations: {
+    kubernetes.io/ingress.class: alb,
+    alb.ingress.kubernetes.io/scheme: internet-facing,
+    alb.ingress.kubernetes.io/target-type: ip,
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]',
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:189768267137:certificate/99bc14a9-bc03-4d4a-92ca-88842ca76f39,
+  }
+  hosts: []
   #   - host: myapp.arch.beescloud.com
   #     paths:
   #       - path: /
   #         pathType: Prefix
-     tls: []
+  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
