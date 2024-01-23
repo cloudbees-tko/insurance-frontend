@@ -14,7 +14,7 @@ pipeline {
                       command:
                       - /busybox/cat
                       tty: true
-                '''.removeIndent()
+                '''.stripIndent()
         }
     }
 
