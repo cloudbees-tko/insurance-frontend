@@ -3,18 +3,18 @@ pipeline {
         kubernetes {
             defaultContainer 'builder'
             yaml '''
-kind: Pod
-metadata:
-  name: kaniko
-spec:
-  containers:
-  - name: builder
-    image: gcr.io/kaniko-project/executor:debug
-    imagePullPolicy: Always
-    command:
-    - /busybox/cat
-    tty: true
-'''
+                kind: Pod
+                metadata:
+                    name: kaniko
+                spec:
+                    containers:
+                    - name: builder
+                      image: gcr.io/kaniko-project/executor:debug
+                      imagePullPolicy: Always
+                      command:
+                      - /busybox/cat
+                      tty: true
+                '''.removeIndent()
         }
     }
 
