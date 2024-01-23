@@ -24,15 +24,15 @@ ingress:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]',
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:189768267137:certificate/99bc14a9-bc03-4d4a-92ca-88842ca76f39,
   }
-  hosts: []
-  #   - host: myapp.arch.beescloud.com
-  #     paths:
-  #       - path: /
-  #         pathType: Prefix
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  hosts:
+    - host: example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: insurance-frontend-tls
+      hosts:
+        - example.com
 
 backendUrl: https://example.com
 fmToken: 614cb9429c58545c995db1d5
