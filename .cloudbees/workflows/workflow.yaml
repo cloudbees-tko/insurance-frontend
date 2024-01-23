@@ -16,7 +16,7 @@ jobs:
         run: |
           echo "hello jenkins"
       
-      # use the run-jenkins-tko-job preconfigured action to run a job
+      # use the run-jenkins-tko-job preconfigured action to run a job 
       - name: Build image with Jenkins
         uses: run-jenkins-tko-job
         with:
