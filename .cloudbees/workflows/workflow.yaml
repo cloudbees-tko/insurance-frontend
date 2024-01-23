@@ -7,6 +7,11 @@ on:
     branches:
       - '**'
 
+env:
+  UNIQUE_PREFIX: sw
+  APP_NAME: insurance-frontend
+  HOSTNAME: insurance-frontend.arch.beescloud.com
+
 jobs:
   build-and-publsh:
     steps:
@@ -45,7 +50,7 @@ jobs:
           values: |
             image:
               repository:  ${{ steps.aws-login.outputs.aws-account-id }}.dkr.ecr.us-east-1.amazonaws.com/${{ env.APP_NAME }}-image
-              tag: ${{ steps.image-publish.outputs.tag }}
+              tag: 13
 
       - name: Publish Helm chart
         id: helm-publish
