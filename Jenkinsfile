@@ -31,7 +31,7 @@ pipeline {
                     sh  """echo '{"credsStore": "ecr-login"}' >> '/kaniko/.docker/config.json'"""
                     sh "/kaniko/executor --dockerfile `pwd`/Dockerfile --context `pwd` --destination=189768267137.dkr.ecr.us-east-1.amazonaws.com/insurance-frontend-image:${env.BUILD_ID}"
                 } //container
-              } //steps
+              } //steps 
         }
     }
 }
