@@ -1,6 +1,6 @@
 # insurance-frontend
 
-Detailed README coming soon.
+Detailed README coming soon. 
 
 ## How to run
 
